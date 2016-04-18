@@ -8,7 +8,8 @@
     "watchDev": "WEBPACK_ENV=dev webpack --watch",
     "test": "echo 'Make sure to run npm run watchTest also!' && WEBPACK_ENV=test webpack --progres --colors  && ./node_modules/karma/bin/karma start",
     "watchTest": "WEBPACK_ENV=test webpack --watch --progress --colors",
-    "karma": "./node_modules/karma/bin/karma start"
+    "karma": "./node_modules/karma/bin/karma start",
+    "start":"node ./test/server.js"
   },
   "directories": {
     "test": "test"
@@ -25,6 +26,7 @@
     "babel-loader": "^6.2.4",
     "babel-preset-es2015": "^6.6.0",
     "babel-preset-stage-0": "^6.5.0",
+    "express": "^4.13.4",
     "jasmine": "^2.4.1",
     "jasmine-core": "^2.4.1",
     "karma": "^0.13.22",

@@ -162,6 +162,30 @@ describe('computeStyles', () => {
             expect(computeStyles(fixture)).toBe(html);
         });
     });
+
+    describe('linked style sheets', () => {
+
+        let link;
+
+        beforeEach(() => {
+            link = document.createElement('link');
+            link.rel = "stylesheet";
+            link.type = "text/css";
+            link.href = "./base/test/test.css";
+            document.body.appendChild(link);
+        });
+
+        afterEach(() => {
+            try{ document.body.removeChild(link); }catch(e){}
+        });
+
+        xit('should add in properties from linked style sheets', ()=>{
+            computeStyles(fixture);
+            expect(1).toBe(1);
+            // let html =  `<div class="fixture" style="color: rgb(0, 0, 255);">i am fixture</div>`;
+            // expect(computeStyles(fixture)).toBe(html);
+        });
+    });
 });
 
 

@@ -64,6 +64,9 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
+	var fixture = document.querySelector('.fixture');
+	computeStyles(fixture);
+
 	function computeStyles(node, styleElRules) {
 
 	    if (!node) {
@@ -71,21 +74,47 @@
 	    }
 
 	    var styleEls = document.querySelectorAll('style'),
-	        rulesArr = void 0;
+	        cssSheets = void 0,
+	        cssRules = void 0,
+	        stylesRules = void 0;
 
 	    styleElRules = styleElRules || {};
 
 	    [].forEach.call(styleEls, function (sheet) {
-	        rulesArr = sheet.innerHTML.match(/{(.*?)}/g)[0].replace(/ /g, '').replace(/[:;{}]/g, ' ').trim().split(' ');
+	        stylesRules = sheet.innerHTML.match(/{(.*?)}/g)[0].replace(/ /g, '').replace(/[:;{}]/g, ' ').trim().split(' ');
 
-	        rulesArr = rulesArr.filter(function (prop) {
+	        stylesRules = stylesRules.filter(function (prop) {
 	            return prop !== '!important';
 	        });
 
-	        for (var i = 0; i < rulesArr.length; i += 2) {
-	            styleElRules[rulesArr[i]] = true;
+	        for (var i = 0; i < stylesRules.length; i += 2) {
+	            styleElRules[stylesRules[i]] = true;
 	        }
 	    });
+
+	    try {
+	        cssRules = [].map.call(document.styleSheets, function (sheet) {
+	            return [].map.call(sheet.cssRules, function (rule) {
+	                return rule.cssText;
+	            });
+	        }).reduce(function (obj, piece) {
+	            var piece = piece.map(function (rule) {
+	                return rule.match(/{(.*?)}/g)[0].replace(/ /g, '').replace(/[:;{}]/g, ' ').trim().split(' ');
+	            })[0];
+	            piece = piece.filter(function (item) {
+	                return item !== '!important';
+	            });
+
+	            for (var i = 0; i < piece.length; i += 2) {
+	                obj[piece[i]] = true;
+	            }
+
+	            return obj;
+	        }, {});
+	    } catch (e) {
+	        console.log('you got an error');
+	        console.log(e);
+	    }
 
 	    [].forEach.call(node.children, function (child) {
 	        return computeStyles(child);
